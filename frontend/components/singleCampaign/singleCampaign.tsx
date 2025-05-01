@@ -1,4 +1,5 @@
 import dayjs from "dayjs"
+import Image from "next/image"
 interface CampaignData {
   brand: string,
   budget: number,
@@ -28,11 +29,12 @@ export default function SingleCampaign({ data }: ComponentProps) {
         <p className="text-gray-500 text-sm">{dayjs.unix(data?.start_date).format('DD/MM/YY')} - {dayjs.unix(data?.end_date).format('DD/MM/YY')}</p>
       </div>
 
-      <div className="w-full overflow-hidden rounded-xl border border-gray-700 shadow-md">
+      <div className="w-full overflow-hidden rounded-xl border border-gray-700 shadow-md relative">
         <img
           src={`https://dycdmuuvemuzhhoalnun.supabase.co/storage/v1/object/public/campaign-banner//${data?.image_url}`}
           alt="Campaign Banner"
           className="w-full h-auto object-cover"
+          style={{ objectFit: "contain" }}
         />
       </div>
 
