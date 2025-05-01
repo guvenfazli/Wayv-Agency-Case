@@ -30,7 +30,8 @@ export default function Login() {
         body: JSON.stringify(userValue),
         headers: {
           'Content-Type': "application/json"
-        }
+        },
+        credentials: "include"
       })
 
       if (!response.ok) {
