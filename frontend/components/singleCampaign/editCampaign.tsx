@@ -6,10 +6,26 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-export default function EditCampaign() {
+interface CampaignData {
+  brand: string,
+  budget: number,
+  createdAt: string,
+  description: string,
+  end_date: number,
+  id: string,
+  image_url: string,
+  start_date: number,
+  title: string
+}
+
+interface ComponentProps {
+  data: CampaignData | null
+}
+
+
+export default function EditCampaign({ data }: ComponentProps) {
   return (
     <div className="flex gap-4 pt-4">
-
       <Dialog>
         <DialogTrigger className="px-4 py-2 bg-blue-600 hover:bg-blue-900 rounded-md font-medium duration-100 ease-in-out cursor-pointer">Edit</DialogTrigger>
         <DialogContent className="bg-[#1a1a1a] text-white border border-gray-700 shadow-xl rounded-xl">
@@ -20,12 +36,13 @@ export default function EditCampaign() {
           <form className="space-y-4 mt-4">
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="title" className="text-sm font-medium text-gray-300">Title</label>
-              <input name="title" type="text" placeholder="Enter campaign title" className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+              <input defaultValue={data?.title} name="title" type="text" placeholder="Enter campaign title" className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
             </div>
 
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="brand" className="text-sm font-medium text-gray-300">Brand</label>
               <input
+                defaultValue={data?.brand}
                 name="brand"
                 type="text"
                 className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -37,6 +54,7 @@ export default function EditCampaign() {
               <div className="flex flex-col gap-1 w-1/2">
                 <label htmlFor="startDate" className="text-sm font-medium text-gray-300">Start Date</label>
                 <input
+                  defaultValue={data?.start_date}
                   name="startDate"
                   type="date"
                   className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -46,6 +64,7 @@ export default function EditCampaign() {
               <div className="flex flex-col gap-1 w-1/2">
                 <label htmlFor="endDate" className="text-sm font-medium text-gray-300">End Date</label>
                 <input
+                  defaultValue={data?.end_date}
                   name="endDate"
                   type="date"
                   className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -56,6 +75,7 @@ export default function EditCampaign() {
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="budget" className="text-sm font-medium text-gray-300">Budget $</label>
               <input
+                defaultValue={data?.budget}
                 name="budget"
                 type="number"
                 className="bg-[#0e0e0e] appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -74,7 +94,7 @@ export default function EditCampaign() {
 
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="description" className="text-sm font-medium text-gray-300">Description</label>
-              <textarea name="description" rows={4} className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              <textarea defaultValue={data?.description} name="description" rows={4} className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 placeholder="Write campaign description..." />
             </div>
 

@@ -1,11 +1,3 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 
 import dayjs from "dayjs"
 import Image from "next/image"
@@ -61,7 +53,7 @@ export default function SingleCampaign({ data }: ComponentProps) {
         <p className="text-green-400 font-mono text-lg">$ {data?.budget}</p>
       </div>
 
-      <EditCampaign />
+      <EditCampaign data={data} />
     </div>
   )
 }
