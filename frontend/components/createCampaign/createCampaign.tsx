@@ -27,11 +27,13 @@ export default function CreateCampaign() {
 
   })
 
+  console.log(campaignData)
+
   function getCampaignData(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    if (field === "imageUrl") {
+    if (field === "image_url") {
       setCampaignData((prev) => ({
         ...prev,
-        ["imageUrl"]: Date.now() + '-' + imagePicker.current?.files?.[0].name
+        ["image_url"]: Date.now() + '-' + imagePicker.current?.files?.[0].name
       }))
     } else {
       setCampaignData((prev) => ({
@@ -96,7 +98,7 @@ export default function CreateCampaign() {
         <div className="flex flex-col gap-1 w-1/2">
           <label htmlFor="startDate" className="text-sm font-medium text-gray-300">Start Date</label>
           <input
-            onChange={(e) => getCampaignData('startDate', e)}
+            onChange={(e) => getCampaignData('start_date', e)}
             name="startDate"
             type="date"
             className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -106,7 +108,7 @@ export default function CreateCampaign() {
         <div className="flex flex-col gap-1 w-1/2">
           <label htmlFor="endDate" className="text-sm font-medium text-gray-300">End Date</label>
           <input
-            onChange={(e) => getCampaignData('endDate', e)}
+            onChange={(e) => getCampaignData('end_date', e)}
             name="endDate"
             type="date"
             className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -128,7 +130,7 @@ export default function CreateCampaign() {
         <label htmlFor="campaignBanner" className="text-sm font-medium text-gray-300">Campaign Banner</label>
         <input
           ref={imagePicker}
-          onChange={(e) => getCampaignData('imageUrl', e)}
+          onChange={(e) => getCampaignData('image_url', e)}
           type="file"
           name="campaignBanner"
           className="text-gray-300 file:bg-gray-800 file:text-white file:border-none file:px-4 file:py-2 file:rounded-md file:cursor-pointer"

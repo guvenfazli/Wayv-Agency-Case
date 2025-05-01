@@ -1,5 +1,6 @@
 const supabase = require('../database/supabaseClient')
 const { throwError } = require('../utils/throwError')
+const { validationResult } = require('express-validator')
 const dayjs = require('dayjs')
 
 exports.getCampaigns = async (req, res, next) => {
@@ -23,9 +24,10 @@ exports.createCampaign = async (req, res, next) => {
   const startStamp = dayjs(startDate).startOf('d').unix()
   const endStamp = dayjs(endDate).startOf('d').unix()
 
+  const errors = validationResult(req)
 
   try {
-
+    if (!errors.isEmpty()) throwError(410, errors.array()[0].msg)
     if (isNaN(budget)) throwError(410, "Please enter a numeric value!")
     if (startStamp > endStamp) throwError(410, "Start date can not be older than end date!")
 

@@ -1,8 +1,23 @@
-export default function CampaignCard() {
+type CampaignData = {
+  brand: string,
+  budget: number,
+  createdAt: string,
+  description: string,
+  end_date: number,
+  id: string,
+  image_url: string,
+  start_date: number,
+  title: string
+}
+
+interface ComponentProps {
+  data: CampaignData
+}
+export default function CampaignCard({ data }: ComponentProps) {
   return (
     <div className="p-6 bg-[#1a1a1a] rounded-xl shadow-md border border-gray-700">
-      <p className="text-lg font-semibold">Sample Campaign</p>
-      <p className="text-sm text-gray-400">Brand: Example Brand</p>
+      <p className="text-lg font-semibold">{data.title}</p>
+      <p className="text-sm text-gray-400">Brand: {data.brand}</p>
     </div>
   )
 }

@@ -4,6 +4,10 @@ const userController = require('../controller/userController')
 const authController = require('../controller/authController')
 const { body } = require('express-validator')
 
+
+
+router.get('/campaigns', userController.getCampaigns)
+
 router.post('/login', [
   body('email')
     .notEmpty()
@@ -19,15 +23,12 @@ router.post('/login', [
     .withMessage('Password must be at least 5 characters long')
 ], authController.userLogin)
 
-router.get('/campaigns', userController.getCampaigns)
-
 router.post('/createCampaign', [
   body('title')
     .notEmpty()
     .withMessage('Title is required')
     .isLength({ min: 1 })
-    .withMessage('Title must be at least 2 characters long')
-  ,
+    .withMessage('Title must be at least 2 characters long'),
   body('brand')
     .notEmpty()
     .withMessage('Brand is required')
@@ -35,13 +36,9 @@ router.post('/createCampaign', [
     .withMessage('Brand is missing!'),
   body('start_date')
     .notEmpty()
-    .withMessage('Start Date is required')
-    .isLength({ min: 1 })
     .withMessage('Start Date is required'),
   body('end_date')
     .notEmpty()
-    .withMessage('End Date is required')
-    .isLength({ min: 1 })
     .withMessage('End Date is required'),
   body('image_url')
     .notEmpty()
@@ -53,8 +50,6 @@ router.post('/createCampaign', [
     .withMessage('Descripion is missing!')
     .isLength({ min: 10 })
     .withMessage('Descripion should be minimum 10 characters!'),
-
-
 ], userController.createCampaign)
 
 

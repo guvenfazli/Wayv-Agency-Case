@@ -30,7 +30,7 @@ exports.userLogin = async (req, res, next) => {
       secure: true
     })
 
-    res.json({ message: 'Success!' })
+    return res.json({ message: 'Success!' })
 
   } catch (err) {
     next(err)
