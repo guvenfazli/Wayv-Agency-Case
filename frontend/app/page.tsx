@@ -1,13 +1,11 @@
 "use client"
 import { useState } from "react";
-
+import Dashboard from "@/components/dashboard/dashboard";
 export default function Home() {
 
-
-
   return (
-    <div>
-      Project Started
+    <div className="flex flex-col p-5">
+      <Dashboard />
     </div>
   );
 }
