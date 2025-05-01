@@ -5,9 +5,27 @@ export default function CreateCampaign() {
 
 
 
-  function createCampaign(e: BaseSyntheticEvent) {
+  async function createCampaign(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    const formData = e.target as HTMLFormElement
+    const fd = new FormData(formData)
 
+    try {
+      const response = await fetch('http://localhost:8080/createCampaign', {
+        method: "POST",
+        credentials: "include",
+        body: fd
+      })
+
+      if (!response.ok) {
+        const resData = await response.json()
+        const error = new Error()
+        error.message = resData.message
+        throw error
+      }
+    } catch (err) {
+      console.log(err)
+    }
 
 
   }
