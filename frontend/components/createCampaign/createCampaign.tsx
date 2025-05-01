@@ -2,10 +2,21 @@
 import { supabase } from "@/lib/supabase"
 import { useRef, useState } from "react"
 
+interface CampaignData {
+  title: string,
+  brand: string,
+  start_date: string,
+  end_date: string,
+  budget: string,
+  image_url: string,
+  description: string
+}
+
 export default function CreateCampaign() {
 
   const imagePicker = useRef<HTMLInputElement>(null)
-  const [campaignData, setCampaignData] = useState({
+  const [isError, setIsError] = useState<string | false>(false)
+  const [campaignData, setCampaignData] = useState<CampaignData>({
     title: "",
     brand: "",
     start_date: "",
@@ -50,16 +61,15 @@ export default function CreateCampaign() {
         throw error
       }
 
-      const resData = await response.json()
+      const { data, error } = await supabase.storage.from('campaign-banner').upload(Date.now() + '-' + imagePicker.current?.files?.[0].name, imagePicker.current.files[0])
 
-      const { data, error } = await supabase.storage.from('campaign-banner').upload(resData.campaignId, imagePicker.current.files[0])
 
 
     } catch (err) {
-      console.log(err)
+      if (err instanceof Error) {
+        setIsError(err.message)
+      }
     }
-
-
   }
 
 
@@ -133,6 +143,13 @@ export default function CreateCampaign() {
       </div>
 
       <button className="w-1/3 bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer">Create Campaign</button>
+
+      {isError &&
+        <div className="flex w-full justify-center items-center">
+          <p className="text-lg text-red-700">{isError}</p>
+        </div>
+      }
+
     </form>
   )
 }

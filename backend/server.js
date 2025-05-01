@@ -1,13 +1,9 @@
 const express = require('express')
 const app = express()
 const PORT = 8080
-const supabase = require('./database/supabaseClient')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieparser = require('cookie-parser')
-const multer = require('multer')
-
-
 
 /* Route Imports */
 const userRoute = require('./routes/userRoutes')
@@ -19,6 +15,7 @@ app.use(cors({
 }))
 app.use(cookieparser())
 app.use(bodyParser.json()) // application/json
+
 /* Routes */
 app.use('/', userRoute)
 

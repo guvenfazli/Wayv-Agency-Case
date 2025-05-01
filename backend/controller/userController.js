@@ -1,5 +1,6 @@
 const supabase = require('../database/supabaseClient')
 const { throwError } = require('../utils/throwError')
+const dayjs = require('dayjs')
 
 exports.getCampaigns = async (req, res, next) => {
   try {
@@ -19,16 +20,20 @@ exports.createCampaign = async (req, res, next) => {
   const { title, brand, startDate, endDate, budget, imageUrl, description } = req.body
 
   const convertedBudget = +budget
+  const startStamp = dayjs(startDate).startOf('d').unix()
+  const endStamp = dayjs(endDate).startOf('d').unix()
+
 
   try {
 
     if (isNaN(budget)) throwError(410, "Please enter a numeric value!")
+    if (startStamp > endStamp) throwError(410, "Start date can not be older than end date!")
 
     const { data, error } = await supabase.from('campaigns').insert({
       title,
       brand,
-      start_date: 1,
-      end_date: 1,
+      start_date: startStamp,
+      end_date: endStamp,
       budget: convertedBudget,
       image_url: imageUrl,
       description
@@ -36,12 +41,9 @@ exports.createCampaign = async (req, res, next) => {
 
     if (error) throwError(500, error)
 
-    return res.json({ message: 'Campaign Informations Created', campaignId: data[0].id })
+    return res.json({ message: 'Campaign Informations Created' })
 
   } catch (err) {
     next(err)
   }
-
-
-
 }
