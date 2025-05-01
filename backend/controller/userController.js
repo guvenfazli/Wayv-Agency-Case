@@ -35,7 +35,7 @@ exports.getCampaign = async (req, res, next) => {
 }
 
 exports.createCampaign = async (req, res, next) => {
-  const { title, brand, startDate, endDate, budget, imageUrl, description } = req.body
+  const { title, brand, startDate, endDate, budget, image_url, description } = req.body
 
   const convertedBudget = +budget
   const startStamp = dayjs(startDate).startOf('d').unix()
@@ -54,7 +54,7 @@ exports.createCampaign = async (req, res, next) => {
       start_date: startStamp,
       end_date: endStamp,
       budget: convertedBudget,
-      image_url: imageUrl,
+      image_url,
       description
     })
 

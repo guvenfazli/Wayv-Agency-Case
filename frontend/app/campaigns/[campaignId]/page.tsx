@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react"
 import SingleCampaign from "@/components/singleCampaign/singleCampaign"
 import { useParams } from "next/navigation"
-
+import dayjs from "dayjs"
 interface CampaignData {
   brand: string,
   budget: number,
@@ -37,6 +37,7 @@ export default function Campaign() {
         }
 
         const resData = await response.json()
+        
         setData(resData.data)
 
 

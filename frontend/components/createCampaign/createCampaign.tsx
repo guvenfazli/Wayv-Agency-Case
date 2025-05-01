@@ -70,7 +70,7 @@ export default function CreateCampaign() {
         throw error
       }
 
-      const { data, error } = await supabase.storage.from('campaign-banner').upload(Date.now() + '-' + imagePicker.current?.files?.[0].name, file)
+      const { data, error } = await supabase.storage.from('campaign-banner').upload(campaignData.image_url, file)
 
 
 

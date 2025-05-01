@@ -16,9 +16,7 @@ interface ComponentProps {
 }
 
 export default function SingleCampaign({ data }: ComponentProps) {
-
-  const startDate = dayjs.unix(data!.start_date).format('DD/MM/YY')
-  const endDate = dayjs.unix(data!.end_date).format('DD/MM/YY')
+  console.log(data)
 
   return (
     <div className="space-y-8">
@@ -27,11 +25,15 @@ export default function SingleCampaign({ data }: ComponentProps) {
         <p className="text-gray-400 text-sm mt-1">
           Brand: <span className="text-white">{data?.brand}</span>
         </p>
-        <p className="text-gray-500 text-sm">{startDate} - {endDate}</p>
+        <p className="text-gray-500 text-sm">{dayjs.unix(data?.start_date).format('DD/MM/YY')} - {dayjs.unix(data?.end_date).format('DD/MM/YY')}</p>
       </div>
 
-      <div>
-        <p>Will be image here</p>
+      <div className="w-full overflow-hidden rounded-xl border border-gray-700 shadow-md">
+        <img
+          src={`https://dycdmuuvemuzhhoalnun.supabase.co/storage/v1/object/public/campaign-banner//${data?.image_url}`}
+          alt="Campaign Banner"
+          className="w-full h-auto object-cover"
+        />
       </div>
 
       <div className="border border-gray-700 rounded-xl p-6 bg-[#1a1a1a] shadow-sm">
@@ -45,11 +47,11 @@ export default function SingleCampaign({ data }: ComponentProps) {
       </div>
 
       <div className="flex gap-4 pt-4">
-        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md font-medium">
+        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-900 rounded-md font-medium duration-100 ease-in-out cursor-pointer">
           Edit
         </button>
 
-        <button className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md font-medium">
+        <button className="px-4 py-2 bg-red-600 hover:bg-red-900 rounded-md font-medium duration-100 ease-in-out cursor-pointer">
           Delete
         </button>
       </div>
