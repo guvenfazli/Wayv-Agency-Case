@@ -3,6 +3,7 @@ const router = express.Router()
 const userController = require('../controller/userController')
 const authController = require('../controller/authController')
 const { body } = require('express-validator')
+
 router.post('/login', [
   body('email')
     .notEmpty()

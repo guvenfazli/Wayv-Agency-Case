@@ -12,7 +12,9 @@ exports.userLogin = async (req, res, next) => {
   const errors = validationResult(req)
   const { data, error } = await supabase.from('admin').select('*').eq('email', email)
   const foundAdmin = data[0]
+  
   try {
+
     if (!errors.isEmpty()) throwError(410, errors.array()[0].msg)
     if (error || !foundAdmin) throwError(404, 'No admin found')
 
@@ -30,10 +32,7 @@ exports.userLogin = async (req, res, next) => {
 
     res.json({ message: 'Success!' })
 
-
   } catch (err) {
     next(err)
   }
-
-
 }
