@@ -1,7 +1,8 @@
-export default function LoginPage(){
+import Login from "@/components/authPage/login"
+export default function LoginPage() {
   return (
-    <div>
-      <p>Login Page</p>
+    <div className="flex w-full h-screen justify-center items-center">
+      <Login />
     </div>
   )
 }
