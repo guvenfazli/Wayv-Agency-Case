@@ -1,7 +1,9 @@
-export default function CreateCampaignPage(){
+import CreateCampaign from "@/components/createCampaign/createCampaign"
+export default function CreateCampaignPage() {
   return (
-    <div>
-      Create Campaign Page
+    <div className="flex flex-col p-5">
+      <p className="text-3xl font-bold tracking-tight">Create Campaign</p>
+      <CreateCampaign />
     </div>
   )
 }
