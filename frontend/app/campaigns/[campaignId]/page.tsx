@@ -2,7 +2,8 @@
 import { useState, useEffect } from "react"
 import SingleCampaign from "@/components/singleCampaign/singleCampaign"
 import { useParams } from "next/navigation"
-import dayjs from "dayjs"
+import Loading from "@/components/loading"
+
 interface CampaignData {
   brand: string,
   budget: number,
@@ -19,12 +20,13 @@ export default function Campaign() {
 
   const { campaignId } = useParams()
   const [data, setData] = useState<CampaignData | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isError, setIsError] = useState<string | false>(false)
 
   useEffect(() => {
     async function fetchSingleCampaign() {
 
       try {
-
         const response = await fetch(`http://localhost:8080/campaigns/${campaignId}`, {
           credentials: "include"
         })
@@ -37,13 +39,16 @@ export default function Campaign() {
         }
 
         const resData = await response.json()
-        
+
         setData(resData.data)
+        setIsLoading(false)
 
 
       } catch (err) {
         if (err instanceof Error) {
-          console.log(err)
+          setIsError(err.message)
+          setIsLoading(false)
+
         }
       }
     }
@@ -54,7 +59,9 @@ export default function Campaign() {
 
   return (
     <div className="bg-black text-white py-10 px-6">
-      <SingleCampaign data={data} />
+      {isLoading && <Loading />}
+      {isError && <p>{isError}</p>}
+      {(!isLoading && !isError) && <SingleCampaign data={data} />}
     </div>
   )
 }

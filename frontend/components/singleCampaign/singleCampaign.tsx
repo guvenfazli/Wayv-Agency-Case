@@ -17,7 +17,8 @@ interface ComponentProps {
 }
 
 export default function SingleCampaign({ data }: ComponentProps) {
-  console.log(data)
+  
+  
 
   return (
     <div className="space-y-8">
@@ -26,7 +27,7 @@ export default function SingleCampaign({ data }: ComponentProps) {
         <p className="text-gray-400 text-sm mt-1">
           Brand: <span className="text-white">{data?.brand}</span>
         </p>
-        <p className="text-gray-500 text-sm">{dayjs.unix(data?.start_date).format('DD/MM/YY')} - {dayjs.unix(data?.end_date).format('DD/MM/YY')}</p>
+        <p className="text-gray-500 text-sm">{dayjs.unix(data!.start_date).format('DD/MM/YY')} - {dayjs.unix(data!.end_date).format('DD/MM/YY')}</p>
       </div>
 
       <div className="w-full overflow-hidden rounded-xl border border-gray-700 shadow-md relative">
