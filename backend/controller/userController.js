@@ -14,3 +14,7 @@ exports.getCampaigns = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.createCampaign = async (req, res, next) => {
+  console.log('here.')
+}
