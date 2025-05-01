@@ -21,7 +21,41 @@ router.post('/login', [
 
 router.get('/campaigns', userController.getCampaigns)
 
-router.post('/createCampaign', userController.createCampaign)
+router.post('/createCampaign', [
+  body('title')
+    .notEmpty()
+    .withMessage('Title is required')
+    .isLength({ min: 1 })
+    .withMessage('Title must be at least 2 characters long')
+  ,
+  body('brand')
+    .notEmpty()
+    .withMessage('Brand is required')
+    .isLength({ min: 1 })
+    .withMessage('Brand is missing!'),
+  body('start_date')
+    .notEmpty()
+    .withMessage('Start Date is required')
+    .isLength({ min: 1 })
+    .withMessage('Start Date is required'),
+  body('end_date')
+    .notEmpty()
+    .withMessage('End Date is required')
+    .isLength({ min: 1 })
+    .withMessage('End Date is required'),
+  body('image_url')
+    .notEmpty()
+    .withMessage('Image is missing!')
+    .isLength({ min: 1 })
+    .withMessage('Images is missing!'),
+  body('description')
+    .notEmpty()
+    .withMessage('Descripion is missing!')
+    .isLength({ min: 10 })
+    .withMessage('Descripion should be minimum 10 characters!'),
+
+
+], userController.createCampaign)
 
 
 module.exports = router
