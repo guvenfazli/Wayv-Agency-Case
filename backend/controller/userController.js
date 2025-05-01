@@ -16,5 +16,8 @@ exports.getCampaigns = async (req, res, next) => {
 }
 
 exports.createCampaign = async (req, res, next) => {
-  console.log('here.')
+  const { title, brand, startDate, endDate, budget, description } = req.body
+  const campaignBanner = req.file
+  console.log(req.body)
+  console.log(req.file)
 }

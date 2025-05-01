@@ -1,5 +1,5 @@
 "use client"
-import { BaseSyntheticEvent, useState } from "react"
+import { useState } from "react"
 
 export default function CreateCampaign() {
 

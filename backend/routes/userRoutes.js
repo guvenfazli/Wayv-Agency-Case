@@ -21,5 +21,7 @@ router.post('/login', [
 
 router.get('/campaigns', userController.getCampaigns)
 
+router.post('/createCampaign', userController.createCampaign)
+
 
 module.exports = router
