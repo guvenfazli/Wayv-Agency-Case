@@ -5,7 +5,7 @@ const authController = require('../controller/authController')
 const { body } = require('express-validator')
 
 
-
+router.get('/campaigns/:campaignId', userController.getCampaign)
 router.get('/campaigns', userController.getCampaigns)
 
 router.post('/login', [

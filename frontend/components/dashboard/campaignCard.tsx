@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation"
 
-type CampaignData = {
+interface CampaignData {
   brand: string,
   budget: number,
   createdAt: string,
@@ -19,7 +19,7 @@ interface ComponentProps {
 export default function CampaignCard({ data }: ComponentProps) {
 
   const router = useRouter()
-  function redirectToCampaignPage(id: string){
+  function redirectToCampaignPage(id: string) {
     router.push(`/campaigns/${id}`)
   }
 

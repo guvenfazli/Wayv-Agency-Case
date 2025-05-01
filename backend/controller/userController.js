@@ -17,6 +17,23 @@ exports.getCampaigns = async (req, res, next) => {
   }
 }
 
+exports.getCampaign = async (req, res, next) => {
+
+  const campaignId = req.params.campaignId
+
+  try {
+    const { data, error } = await supabase.from('campaigns').select('*').eq('id', campaignId)
+
+    if (data.length === 0) throwError(404, "Campaign could not found!")
+    if (!data || error) throwError(500, "Something went wrong.")
+
+    return res.json({ data: data[0] })
+
+  } catch (err) {
+    next(err)
+  }
+}
+
 exports.createCampaign = async (req, res, next) => {
   const { title, brand, startDate, endDate, budget, imageUrl, description } = req.body
 
