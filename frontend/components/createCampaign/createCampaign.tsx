@@ -46,6 +46,7 @@ export default function CreateCampaign() {
         <input
           type="file"
           className="text-gray-300 file:bg-gray-800 file:text-white file:border-none file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
+          accept="image/jpg, image/jpeg, image/png"
         />
       </div>
 
