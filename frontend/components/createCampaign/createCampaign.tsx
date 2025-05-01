@@ -14,6 +14,18 @@ export default function CreateCampaign() {
           placeholder="Enter brand name"
         />
       </div>
+
+      <div className="flex gap-4">
+        <div className="flex flex-col gap-1 w-1/2">
+          <label className="text-sm font-medium text-gray-300">Start Date</label>
+          <input
+            type="date"
+            className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+      </div>
+
       <label>Start Date</label>
       <label>End Date</label>
       <label>Budget</label>
