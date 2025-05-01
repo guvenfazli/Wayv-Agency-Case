@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
+import Loading from "../loading"
 import CampaignCard from "./campaignCard"
 
 type CampaignData = {
@@ -17,12 +18,15 @@ type CampaignData = {
 export default function Dashboard() {
 
   const [data, setData] = useState<CampaignData[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<false | string>(false)
 
   useEffect(() => {
 
     async function fetchCampaigns() {
 
       try {
+        setIsLoading(true)
         const response = await fetch('http://localhost:8080/campaigns', {
           credentials: "include"
         })
@@ -37,10 +41,11 @@ export default function Dashboard() {
         const resData = await response.json()
 
         setData(resData.data)
-
+        setIsLoading(false)
       } catch (err) {
         if (err instanceof Error) {
-          console.log(err)
+          setIsError(err.message)
+          setIsLoading(false)
         }
       }
 
@@ -55,8 +60,9 @@ export default function Dashboard() {
     <div className="space-y-6">
       <p className="text-3xl font-bold tracking-tight">Campaign Dashboard</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.map((data) => <CampaignCard key={data.id} data={data} />)}
-
+        {data.map((data: CampaignData) => <CampaignCard key={data.id} data={data} />)}
+        {isLoading && <Loading />}
+        {isError && <p>{isError}</p>}
       </div>
     </div>
   )

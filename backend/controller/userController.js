@@ -31,7 +31,7 @@ exports.createCampaign = async (req, res, next) => {
     if (isNaN(budget)) throwError(410, "Please enter a numeric value!")
     if (startStamp > endStamp) throwError(410, "Start date can not be older than end date!")
 
-    const { data, error } = await supabase.from('campaigns').insert({
+    const { error } = await supabase.from('campaigns').insert({
       title,
       brand,
       start_date: startStamp,
@@ -39,7 +39,7 @@ exports.createCampaign = async (req, res, next) => {
       budget: convertedBudget,
       image_url: imageUrl,
       description
-    }).select()
+    })
 
     if (error) throwError(500, error)
 

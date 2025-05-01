@@ -1,3 +1,5 @@
+import { useRouter } from "next/navigation"
+
 type CampaignData = {
   brand: string,
   budget: number,
@@ -13,9 +15,16 @@ type CampaignData = {
 interface ComponentProps {
   data: CampaignData
 }
+
 export default function CampaignCard({ data }: ComponentProps) {
+
+  const router = useRouter()
+  function redirectToCampaignPage(id: string){
+    router.push(`/campaigns/${id}`)
+  }
+
   return (
-    <div className="p-6 bg-[#1a1a1a] rounded-xl shadow-md border border-gray-700">
+    <div onClick={() => redirectToCampaignPage(data.id)} className="p-6 bg-[#1a1a1a] rounded-xl shadow-md border border-gray-700 hover:bg-[#1a1a1a]/50 duration-100 ease-in-out cursor-pointer">
       <p className="text-lg font-semibold">{data.title}</p>
       <p className="text-sm text-gray-400">Brand: {data.brand}</p>
     </div>
