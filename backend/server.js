@@ -3,6 +3,9 @@ const app = express()
 const PORT = 8080
 const supabase = require('./database/supabaseClient')
 const cors = require('cors')
+const bodyParser = require('body-parser')
+const cookieparser = require('cookie-parser')
+
 
 
 /* Route Imports */
@@ -14,6 +17,9 @@ app.use(cors({
   credentials: true,
   origin: 'http://localhost:3000'
 }))
+app.use(cookieparser())
+app.use(bodyParser.json()) // application/json
+
 
 /* Routes */
 
