@@ -1,4 +1,5 @@
 "use client"
+import { supabase } from "@/lib/supabase"
 import { useRef, useState } from "react"
 
 export default function CreateCampaign() {
@@ -48,6 +49,12 @@ export default function CreateCampaign() {
         error.message = resData.message
         throw error
       }
+
+      const resData = await response.json()
+
+      const { data, error } = await supabase.storage.from('campaign-banner').upload(resData.campaignId, imagePicker.current.files[0])
+
+
     } catch (err) {
       console.log(err)
     }
@@ -55,7 +62,7 @@ export default function CreateCampaign() {
 
   }
 
-  console.log(campaignData)
+
 
   return (
     <form onSubmit={(e) => createCampaign(e)} className="flex flex-col w-full justify-center items-center gap-3 bg-[#1a1a1a] p-6 rounded-xl border border-gray-700 shadow-md">
