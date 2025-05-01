@@ -27,14 +27,16 @@ export default function CreateCampaign() {
 
   })
 
-  console.log(campaignData)
-
   function getCampaignData(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (field === "image_url") {
-      setCampaignData((prev) => ({
-        ...prev,
-        ["image_url"]: Date.now() + '-' + imagePicker.current?.files?.[0].name
-      }))
+      const file = imagePicker.current?.files?.[0];
+      if (file) {
+        setCampaignData((prev) => ({
+          ...prev,
+          image_url: Date.now() + '-' + file.name,
+        }));
+      }
+      return;
     } else {
       setCampaignData((prev) => ({
         ...prev,
@@ -47,6 +49,11 @@ export default function CreateCampaign() {
     e.preventDefault()
 
     try {
+      const file = imagePicker.current?.files?.[0];
+      if (!file) {
+        throw new Error("Please select a campaign banner image.");
+      }
+
       const response = await fetch('http://localhost:8080/createCampaign', {
         method: "POST",
         credentials: "include",
@@ -63,7 +70,7 @@ export default function CreateCampaign() {
         throw error
       }
 
-      const { data, error } = await supabase.storage.from('campaign-banner').upload(Date.now() + '-' + imagePicker.current?.files?.[0].name, imagePicker.current.files[0])
+      const { data, error } = await supabase.storage.from('campaign-banner').upload(Date.now() + '-' + imagePicker.current?.files?.[0].name, file)
 
 
 

@@ -50,7 +50,6 @@ export default function Dashboard() {
 
   }, [])
 
-  console.log(data)
 
   return (
     <div className="space-y-6">
