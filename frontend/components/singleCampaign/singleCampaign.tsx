@@ -1,5 +1,17 @@
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import dayjs from "dayjs"
 import Image from "next/image"
+import EditCampaign from "./editCampaign"
+
+
 interface CampaignData {
   brand: string,
   budget: number,
@@ -17,8 +29,8 @@ interface ComponentProps {
 }
 
 export default function SingleCampaign({ data }: ComponentProps) {
-  
-  
+
+
 
   return (
     <div className="space-y-8">
@@ -49,15 +61,7 @@ export default function SingleCampaign({ data }: ComponentProps) {
         <p className="text-green-400 font-mono text-lg">$ {data?.budget}</p>
       </div>
 
-      <div className="flex gap-4 pt-4">
-        <button className="px-4 py-2 bg-blue-600 hover:bg-blue-900 rounded-md font-medium duration-100 ease-in-out cursor-pointer">
-          Edit
-        </button>
-
-        <button className="px-4 py-2 bg-red-600 hover:bg-red-900 rounded-md font-medium duration-100 ease-in-out cursor-pointer">
-          Delete
-        </button>
-      </div>
+      <EditCampaign />
     </div>
   )
 }
