@@ -1,20 +1,45 @@
 "use client"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 export default function CreateCampaign() {
 
+  const imagePicker = useRef<HTMLInputElement>(null)
+  const [campaignData, setCampaignData] = useState({
+    title: "",
+    brand: "",
+    start_date: "",
+    end_date: "",
+    budget: "",
+    image_url: "",
+    description: ""
 
+  })
+
+  function getCampaignData(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    if (field === "imageUrl") {
+      setCampaignData((prev) => ({
+        ...prev,
+        ["imageUrl"]: Date.now() + '-' + imagePicker.current?.files?.[0].name
+      }))
+    } else {
+      setCampaignData((prev) => ({
+        ...prev,
+        [field]: input.target.value
+      }))
+    }
+  }
 
   async function createCampaign(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    const formData = e.target as HTMLFormElement
-    const fd = new FormData(formData)
 
     try {
       const response = await fetch('http://localhost:8080/createCampaign', {
         method: "POST",
         credentials: "include",
-        body: fd
+        body: JSON.stringify(campaignData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
 
       if (!response.ok) {
@@ -30,16 +55,19 @@ export default function CreateCampaign() {
 
   }
 
+  console.log(campaignData)
+
   return (
     <form onSubmit={(e) => createCampaign(e)} className="flex flex-col w-full justify-center items-center gap-3 bg-[#1a1a1a] p-6 rounded-xl border border-gray-700 shadow-md">
       <div className="flex flex-col gap-1 w-1/3">
         <label htmlFor="title" className="text-sm font-medium text-gray-300">Title</label>
-        <input name="title" type="text" placeholder="Enter campaign title" className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+        <input onChange={(e) => getCampaignData('title', e)} name="title" type="text" placeholder="Enter campaign title" className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
       </div>
 
       <div className="flex flex-col gap-1 w-1/3">
         <label htmlFor="brand" className="text-sm font-medium text-gray-300">Brand</label>
         <input
+          onChange={(e) => getCampaignData('brand', e)}
           name="brand"
           type="text"
           className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -51,6 +79,7 @@ export default function CreateCampaign() {
         <div className="flex flex-col gap-1 w-1/2">
           <label htmlFor="startDate" className="text-sm font-medium text-gray-300">Start Date</label>
           <input
+            onChange={(e) => getCampaignData('startDate', e)}
             name="startDate"
             type="date"
             className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -60,6 +89,7 @@ export default function CreateCampaign() {
         <div className="flex flex-col gap-1 w-1/2">
           <label htmlFor="endDate" className="text-sm font-medium text-gray-300">End Date</label>
           <input
+            onChange={(e) => getCampaignData('endDate', e)}
             name="endDate"
             type="date"
             className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -70,6 +100,7 @@ export default function CreateCampaign() {
       <div className="flex flex-col gap-1 w-1/3">
         <label htmlFor="budget" className="text-sm font-medium text-gray-300">Budget $</label>
         <input
+          onChange={(e) => getCampaignData('budget', e)}
           name="budget"
           type="number"
           className="bg-[#0e0e0e] appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -79,6 +110,8 @@ export default function CreateCampaign() {
       <div className="flex flex-col gap-1 w-1/3">
         <label htmlFor="campaignBanner" className="text-sm font-medium text-gray-300">Campaign Banner</label>
         <input
+          ref={imagePicker}
+          onChange={(e) => getCampaignData('imageUrl', e)}
           type="file"
           name="campaignBanner"
           className="text-gray-300 file:bg-gray-800 file:text-white file:border-none file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
@@ -88,7 +121,7 @@ export default function CreateCampaign() {
 
       <div className="flex flex-col gap-1 w-1/3">
         <label htmlFor="description" className="text-sm font-medium text-gray-300">Description</label>
-        <textarea name="description" rows={4} className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+        <textarea onChange={(e) => getCampaignData('description', e)} name="description" rows={4} className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           placeholder="Write campaign description..." />
       </div>
 

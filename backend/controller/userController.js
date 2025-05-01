@@ -16,8 +16,21 @@ exports.getCampaigns = async (req, res, next) => {
 }
 
 exports.createCampaign = async (req, res, next) => {
-  const { title, brand, startDate, endDate, budget, description } = req.body
-  const campaignBanner = req.file
+  const { title, brand, startDate, endDate, budget, imageUrl, description } = req.body
   console.log(req.body)
-  console.log(req.file)
+  
+  const { error } = await supabase.from('campaign').insert({
+    title,
+    brand,
+    start_date: 1,
+    end_date: 1,
+    budget: 1,
+    image_url: imageUrl,
+    description
+  })
+
+  console.log(error)
+
+
+
 }
