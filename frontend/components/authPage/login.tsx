@@ -1,6 +1,8 @@
 "use client"
 
+import { useRouter } from "next/navigation";
 import { BaseSyntheticEvent, useState } from "react"
+
 
 interface UserValue {
   email: string;
@@ -13,8 +15,13 @@ export default function Login() {
     email: "",
     password: ""
   })
+  const [isError, setIsError] = useState<string | false>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const router = useRouter()
 
   function gatherValue(field: string, input: React.ChangeEvent<HTMLInputElement>) {
+    if (isError) setIsError(false)
+
     setUserValue((prev) => ({
       ...prev,
       [field]: input.target.value
@@ -25,6 +32,8 @@ export default function Login() {
     e.preventDefault()
 
     try {
+      setIsLoading(true)
+      setIsError(false)
       const response = await fetch('http://localhost:8080/login', {
         method: "POST",
         body: JSON.stringify(userValue),
@@ -36,16 +45,20 @@ export default function Login() {
 
       if (!response.ok) {
         const resData = await response.json()
-        const error = new Error(resData.message)
+        const error = new Error()
+        error.message = resData.message
         throw error
       }
 
-      const resData = await response.json()
-
-      console.log(resData.message)
-
+      setIsError(false)
+      setIsLoading(false)
+      router.push('/')
     } catch (err) {
-      console.log(err)
+      if (err instanceof Error) {
+        setIsError(err.message);
+        setIsLoading(false)
+
+      }
     }
   }
 
@@ -61,9 +74,11 @@ export default function Login() {
         <label className="text-lg">Password</label>
         <input onChange={(e) => gatherValue("password", e)} required type="password" className="bg-black rounded-md py-1.5 w-full px-1"></input>
         <div className="flex w-full justify-center items-center">
-          <button className="bg-black w-1/2 py-2 rounded-lg cursor-pointer hover:bg-black/80 duration-100">Login</button>
+          <button disabled={isLoading} className={`bg-black w-1/2 py-2 rounded-lg cursor-pointer hover:bg-black/80 duration-100 ${isLoading && 'bg-black/30'}`}>{isLoading ? 'Logging In...' : 'Login'}</button>
         </div>
       </form>
+
+      {isError && <p>{isError}</p>}
     </div>
   )
 }
