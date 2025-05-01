@@ -24,13 +24,31 @@ export default function CreateCampaign() {
           />
         </div>
 
+        <div className="flex flex-col gap-1 w-1/2">
+          <label className="text-sm font-medium text-gray-300">End Date</label>
+          <input
+            type="date"
+            className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
       </div>
 
-      <label>Start Date</label>
-      <label>End Date</label>
-      <label>Budget</label>
-      <input></input>
-      <label>Campaign Banner</label>
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-gray-300">Budget $</label>
+        <input
+          type="number"
+          className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium text-gray-300">Campaign Banner</label>
+        <input
+          type="file"
+          className="text-gray-300 file:bg-gray-800 file:text-white file:border-none file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
+        />
+      </div>
+
       <input></input>
       <label>Description</label>
       <textarea />
