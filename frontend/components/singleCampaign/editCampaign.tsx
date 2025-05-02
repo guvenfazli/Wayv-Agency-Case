@@ -6,6 +6,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useState, useRef, useEffect } from "react"
+import { supabase } from "@/lib/supabase"
 
 interface CampaignData {
   brand: string,
@@ -24,7 +25,6 @@ interface ComponentProps {
 }
 
 export default function EditCampaign({ data }: ComponentProps) {
-
   const imagePicker = useRef<HTMLInputElement>(null)
   const [editValue, setEditValue] = useState({
     title: data?.title,
@@ -38,6 +38,7 @@ export default function EditCampaign({ data }: ComponentProps) {
   const [isError, setIsError] = useState<string | false>(false)
   const [isSuccess, setIsSucces] = useState<string | false>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const currentPhoto = data?.image_url
 
   function gatherValue(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (field === "image_url") {
@@ -59,7 +60,7 @@ export default function EditCampaign({ data }: ComponentProps) {
 
   async function submitEdit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
+    const file = imagePicker.current?.files?.[0];
     try {
       setIsLoading(true)
       setIsError(false)
@@ -81,6 +82,10 @@ export default function EditCampaign({ data }: ComponentProps) {
       }
 
       const resData = await response.json()
+
+      if (currentPhoto !== editValue.image_url) {
+        const { data, error } = await supabase.storage.from('campaign-banner').upload(editValue.image_url, file)
+      }
 
       setIsSucces(resData.message)
       setIsLoading(false)
