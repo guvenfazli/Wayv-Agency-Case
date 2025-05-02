@@ -17,6 +17,8 @@ export default function SideBar() {
       setIsLoggedIn(session?.user ?? false)
     })
 
+    if (!isLoggedIn) router.push('/login')
+
     return () => {
       listener.subscription.unsubscribe()
     }
