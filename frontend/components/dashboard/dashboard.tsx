@@ -22,9 +22,7 @@ export default function Dashboard() {
   const [isError, setIsError] = useState<false | string>(false) // Controlling the component for request progress.
 
   useEffect(() => {
-
     async function fetchCampaigns() {
-
       try {
         setIsLoading(true)
         const response = await fetch('http://localhost:8080/campaigns', {
@@ -46,11 +44,8 @@ export default function Dashboard() {
           setIsLoading(false)
         }
       }
-
     }
-
     fetchCampaigns()
-
   }, [])
 
 

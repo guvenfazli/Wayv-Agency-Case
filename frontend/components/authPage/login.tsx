@@ -30,7 +30,7 @@ export default function Login() {
 
   async function submitLogin(e: BaseSyntheticEvent) {
     // I'm using both login methods. Using Supabase and my own method. Just to show the both of them. Also, i'm doing backend validation as well and i'm saving the cookie in order to send it with every request. 
-    
+
     e.preventDefault()
     const { data, error } = await supabase.auth.signInWithPassword({
       email: userValue.email,
@@ -69,7 +69,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col justify-center gap-2 border border-white py-3 px-5 min-h-1/3 w-1/4 rounded-4xl bg-stone-900">
+    <div className="flex flex-col justify-center gap-2 border border-white py-3 px-5 min-h-1/3 w-1/4 rounded-4xl bg-stone-900 max-xl:w-1/2 max-md:w-full">
       <div className="flex text-center justify-center items-center">
         <p className="text-xl">Admin Login</p>
       </div>

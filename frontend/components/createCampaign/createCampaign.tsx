@@ -1,7 +1,7 @@
 "use client"
 import { supabase } from "@/lib/supabase"
 import { useRef, useState } from "react"
-
+import checkError from "../utils/checkError"
 interface CampaignData {
   title: string,
   brand: string,
@@ -14,9 +14,9 @@ interface CampaignData {
 
 export default function CreateCampaign() {
 
-  const imagePicker = useRef<HTMLInputElement>(null)
-  const [isError, setIsError] = useState<string | false>(false)
-  const [campaignData, setCampaignData] = useState<CampaignData>({
+  const imagePicker = useRef<HTMLInputElement>(null) // Controlling the request process
+  const [isError, setIsError] = useState<string | false>(false) // Controlling the request process
+  const [campaignData, setCampaignData] = useState<CampaignData>({ // Collecting the data and controlling component.
     title: "",
     brand: "",
     start_date: "",
@@ -24,7 +24,6 @@ export default function CreateCampaign() {
     budget: "",
     image_url: "",
     description: ""
-
   })
 
   function getCampaignData(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -33,7 +32,7 @@ export default function CreateCampaign() {
       if (file) {
         setCampaignData((prev) => ({
           ...prev,
-          image_url: Date.now() + '-' + file.name,
+          image_url: Date.now() + '-' + file.name, // Creating unique name, just for the case i'm using Date.now function, normally i would use UUID libraries.
         }));
       }
       return;
@@ -64,16 +63,11 @@ export default function CreateCampaign() {
       })
 
       if (!response.ok) {
-        const resData = await response.json()
-        const error = new Error()
-        error.message = resData.message
-        throw error
+        const errorCheck = await checkError(response)
+        throw errorCheck
       }
 
       const { data, error } = await supabase.storage.from('campaign-banner').upload(campaignData.image_url, file)
-
-
-
     } catch (err) {
       if (err instanceof Error) {
         setIsError(err.message)
