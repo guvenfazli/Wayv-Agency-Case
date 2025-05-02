@@ -21,10 +21,10 @@ interface ComponentProps {
 export default function SingleCampaign({ data }: ComponentProps) {
 
   const router = useRouter()
- 
+
   async function deleteCampaign() {
     try {
-      const response = await fetch(`http://localhost:8080/deleteCampaign/${data?.id}`, {
+      const response = await fetch(`http://localhost:8080/deleteCampaign/${data?.id}/${data?.image_url}`, {
         method: 'DELETE',
         credentials: 'include'
       })
@@ -37,6 +37,7 @@ export default function SingleCampaign({ data }: ComponentProps) {
       }
 
       const resData = await response.json()
+  
 
     } catch (err) {
       if (err instanceof Error) {

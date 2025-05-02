@@ -35,11 +35,11 @@ exports.getCampaign = async (req, res, next) => {
 }
 
 exports.createCampaign = async (req, res, next) => {
-  const { title, brand, startDate, endDate, budget, image_url, description } = req.body
+  const { title, brand, start_date, end_date, budget, image_url, description } = req.body
 
   const convertedBudget = +budget
-  const startStamp = dayjs(startDate).startOf('d').unix()
-  const endStamp = dayjs(endDate).startOf('d').unix()
+  const startStamp = dayjs(start_date).startOf('d').unix()
+  const endStamp = dayjs(end_date).startOf('d').unix()
 
   const errors = validationResult(req)
 
@@ -101,11 +101,11 @@ exports.editCampaign = async (req, res, next) => {
 
 exports.deleteCampaign = async (req, res, next) => {
   const campaignId = req.params.campaignId
+  const imageUrl = req.params.imageUrl
   try {
     const response = await supabase.from('campaigns').delete().eq('id', campaignId)
-    const { data, error } = await supabase.storage.from('campaign-banner').remove(['1746148299310-musicPhoto.jpg'])
+    const { data, error } = await supabase.storage.from('campaign-banner').remove([imageUrl])
 
-    console.log(error)
     if (error) throwError(500, error)
 
     return res.status(response.status).json({ message: 'Campaign Informations Updated' })
