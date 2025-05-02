@@ -72,7 +72,8 @@ export default function CreateCampaign() {
         throw errorCheck
       }
 
-      const { data, error } = await supabase.storage.from('campaign-banner').upload(campaignData.image_url, file)
+      if (response.ok) await supabase.storage.from('campaign-banner').upload(campaignData.image_url, file)
+
       setIsLoading(false)
       router.push('/')
     } catch (err) {

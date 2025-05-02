@@ -27,7 +27,7 @@ export default function Campaign() {
     async function fetchSingleCampaign() {
 
       try {
-        const response = await fetch(`http://localhost:8080/campaigns/${campaignId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/campaigns/${campaignId}`, {
           credentials: "include"
         })
 
