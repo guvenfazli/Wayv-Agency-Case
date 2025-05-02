@@ -24,6 +24,8 @@ router.post('/login', [
     .withMessage('Password must be at least 5 characters long')
 ], authController.userLogin)
 
+router.post('/logout', authController.userLogout)
+
 router.post('/createCampaign', [
   body('title')
     .notEmpty()

@@ -20,12 +20,12 @@ export default function Dashboard() {
   const [data, setData] = useState<CampaignData[]>([]) // Data State
   const [isLoading, setIsLoading] = useState<boolean>(false) // Controlling the component for request progress.
   const [isError, setIsError] = useState<false | string>(false) // Controlling the component for request progress.
-
+  console.log(process.env.NEXT_PUBLIC_API_BASE_URL)
   useEffect(() => {
     async function fetchCampaigns() {
       try {
         setIsLoading(true)
-        const response = await fetch('http://localhost:8080/campaigns', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/campaigns`, {
           credentials: "include"
         })
 

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { User } from "@supabase/supabase-js" // Supabase user type
+import checkError from "../utils/checkError"
 
 export default function SideBar() {
 
@@ -15,7 +16,7 @@ export default function SideBar() {
 
     supabase.auth.getUser().then(({ data }) => {
       setIsLoggedIn(data.user)
-      router.push('/')
+
     })
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -30,8 +31,26 @@ export default function SideBar() {
   }, [])
 
   async function logout() {
-    await supabase.auth.signOut()
-    router.push('/login')
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/logout`, {
+        credentials: "include",
+        method: "POST"
+      })
+
+      if (!response.ok) {
+        const errorCheck = await checkError(response)
+        throw errorCheck
+      }
+
+      await supabase.auth.signOut()
+      router.push('/login')
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(err)
+      }
+    }
+
   }
 
   if (isLoggedIn) {

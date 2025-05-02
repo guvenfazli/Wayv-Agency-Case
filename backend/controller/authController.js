@@ -12,7 +12,7 @@ exports.userLogin = async (req, res, next) => {
   const errors = validationResult(req)
   const { data, error } = await supabase.from('admin').select('*').eq('email', email)
   const foundAdmin = data[0]
-  
+
   try {
 
     if (!errors.isEmpty()) throwError(410, errors.array()[0].msg)
@@ -27,7 +27,8 @@ exports.userLogin = async (req, res, next) => {
     res.cookie('jwt', token, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
-      secure: true
+      secure: true,
+      sameSite: 'none'
     })
 
     return res.json({ message: 'Success!' })
@@ -35,4 +36,14 @@ exports.userLogin = async (req, res, next) => {
   } catch (err) {
     next(err)
   }
+}
+
+exports.userLogout = async (req, res, next) => {
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  });
+
+  return res.status(200).json({ message: 'Logged out.' });
 }
