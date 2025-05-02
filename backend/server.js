@@ -11,7 +11,7 @@ const userRoute = require('./routes/userRoutes')
 /* Middlewares */
 app.use(cors({
   credentials: true,
-  origin: 'http://localhost:3000'
+  origin: 'https://wayv-agency-case.vercel.app'
 }))
 app.use(cookieparser())
 app.use(bodyParser.json()) // application/json
