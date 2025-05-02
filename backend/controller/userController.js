@@ -27,7 +27,7 @@ exports.getCampaign = async (req, res, next) => {
     if (data.length === 0) throwError(404, "Campaign could not found!")
     if (!data || error) throwError(500, "Something went wrong.")
 
-    return res.json({ data: data[0] })
+    return res.status(200).json({ data: data[0] })
 
   } catch (err) {
     next(err)
@@ -60,7 +60,7 @@ exports.createCampaign = async (req, res, next) => {
 
     if (error) throwError(500, error)
 
-    return res.json({ message: 'Campaign Informations Created' })
+    return res.status(200).json({ message: 'Campaign Informations Created' })
 
   } catch (err) {
     next(err)
@@ -80,7 +80,7 @@ exports.editCampaign = async (req, res, next) => {
     if (isNaN(budget)) throwError(410, "Please enter a numeric value!")
     if (startStamp > endStamp) throwError(410, "Start date can not be older than end date!")
 
-    const { error } = await supabase.from('campaigns').update({
+    const { error: dbError } = await supabase.from('campaigns').update({
       title,
       brand,
       start_date: startStamp,
@@ -90,9 +90,9 @@ exports.editCampaign = async (req, res, next) => {
       description
     }).eq('id', campaignId)
 
-    if (error) throwError(500, error)
+    if (dbError) throwError(500, error)
 
-    return res.json({ message: 'Campaign Informations Updated' })
+    return res.status(200).json({ message: 'Campaign Informations Updated' })
 
   } catch (err) {
     next(err)
@@ -103,7 +103,10 @@ exports.deleteCampaign = async (req, res, next) => {
   const campaignId = req.params.campaignId
   const imageUrl = req.params.imageUrl
   try {
-    const response = await supabase.from('campaigns').delete().eq('id', campaignId)
+    const { data: dbData, error: dbError } = await supabase.from('campaigns').delete().eq('id', campaignId)
+
+    if (dbError) throwError(500, error)
+
     const { data, error } = await supabase.storage.from('campaign-banner').remove([imageUrl])
 
     if (error) throwError(500, error)
