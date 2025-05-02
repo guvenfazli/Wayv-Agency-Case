@@ -65,7 +65,7 @@ export default function EditCampaign({ data }: ComponentProps) {
       setIsLoading(true)
       setIsError(false)
 
-      const response = await fetch(`http://localhost:8080/editCampaign/${data?.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/editCampaign/${data?.id}`, {
         method: 'PATCH',
         credentials: 'include',
         body: JSON.stringify(editValue),

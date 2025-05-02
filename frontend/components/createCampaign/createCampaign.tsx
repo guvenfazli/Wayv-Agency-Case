@@ -58,7 +58,7 @@ export default function CreateCampaign() {
         throw new Error("Please select a campaign banner image.");
       }
 
-      const response = await fetch('http://localhost:8080/createCampaign', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/createCampaign`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify(campaignData),

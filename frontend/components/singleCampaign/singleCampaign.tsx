@@ -32,7 +32,7 @@ export default function SingleCampaign({ data }: ComponentProps) {
       setIsLoading(true)
       setIsError(false)
       setIsSuccess(false)
-      const response = await fetch(`http://localhost:8080/deleteCampaign/${data?.id}/${data?.image_url}`, { // Sending Delete Request for campaign deleting.
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/deleteCampaign/${data?.id}/${data?.image_url}`, { // Sending Delete Request for campaign deleting.
         method: 'DELETE',
         credentials: 'include'
       })
