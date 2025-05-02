@@ -30,8 +30,6 @@ export default function SideBar() {
     router.push('/login')
   }
 
-  console.log(isLoggedIn)
-
   if (isLoggedIn) {
     return (
       <div className="flex flex-col h-auto bg-[#1e1e1e] text-white p-4 border-r border-gray-700 shadow-lg">

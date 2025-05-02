@@ -4,7 +4,6 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { BaseSyntheticEvent, useState } from "react"
 
-
 interface UserValue {
   email: string;
   password: string;
@@ -12,12 +11,12 @@ interface UserValue {
 
 export default function Login() {
 
-  const [userValue, setUserValue] = useState<UserValue>({
+  const [userValue, setUserValue] = useState<UserValue>({ // Gathering user values into one state
     email: "",
     password: ""
   })
-  const [isError, setIsError] = useState<string | false>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isError, setIsError] = useState<string | false>(false) // Controlling request progress
+  const [isLoading, setIsLoading] = useState<boolean>(false) // Controlling request progress
   const router = useRouter()
 
   function gatherValue(field: string, input: React.ChangeEvent<HTMLInputElement>) {
@@ -30,12 +29,13 @@ export default function Login() {
   }
 
   async function submitLogin(e: BaseSyntheticEvent) {
+    // I'm using both login methods. Using Supabase and my own method. Just to show the both of them. Also, i'm doing backend validation as well and i'm saving the cookie in order to send it with every request. 
+    
     e.preventDefault()
     const { data, error } = await supabase.auth.signInWithPassword({
       email: userValue.email,
       password: userValue.password,
     })
-
 
     try {
       setIsLoading(true)
