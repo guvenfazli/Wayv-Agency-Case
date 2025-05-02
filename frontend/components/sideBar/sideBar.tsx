@@ -3,10 +3,11 @@ import { supabase } from "@/lib/supabase"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { User } from "@supabase/supabase-js"
 
 export default function SideBar() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState<false | null | User>(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -28,6 +29,8 @@ export default function SideBar() {
     await supabase.auth.signOut()
     router.push('/login')
   }
+
+  console.log(isLoggedIn)
 
   if (isLoggedIn) {
     return (
