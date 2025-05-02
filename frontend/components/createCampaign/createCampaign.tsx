@@ -79,12 +79,12 @@ export default function CreateCampaign() {
 
   return (
     <form onSubmit={(e) => createCampaign(e)} className="flex flex-col w-full justify-center items-center gap-3 bg-[#1a1a1a] p-6 rounded-xl border border-gray-700 shadow-md">
-      <div className="flex flex-col gap-1 w-1/3">
+      <div className="flex flex-col gap-1 w-1/3 max-lg:w-1/2 max-md:w-full">
         <label htmlFor="title" className="text-sm font-medium text-gray-300">Title</label>
         <input onChange={(e) => getCampaignData('title', e)} name="title" type="text" placeholder="Enter campaign title" className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
       </div>
 
-      <div className="flex flex-col gap-1 w-1/3">
+      <div className="flex flex-col gap-1 w-1/3 max-lg:w-1/2 max-md:w-full">
         <label htmlFor="brand" className="text-sm font-medium text-gray-300">Brand</label>
         <input
           onChange={(e) => getCampaignData('brand', e)}
@@ -95,8 +95,8 @@ export default function CreateCampaign() {
         />
       </div>
 
-      <div className="flex gap-4 w-1/3">
-        <div className="flex flex-col gap-1 w-1/2">
+      <div className="flex gap-4 w-1/3 max-lg:w-1/2 max-md:w-full max-[640px]:flex-col">
+        <div className="flex flex-col gap-1 w-1/2 max-md:w-full">
           <label htmlFor="startDate" className="text-sm font-medium text-gray-300">Start Date</label>
           <input
             onChange={(e) => getCampaignData('start_date', e)}
@@ -106,7 +106,7 @@ export default function CreateCampaign() {
           />
         </div>
 
-        <div className="flex flex-col gap-1 w-1/2">
+        <div className="flex flex-col gap-1 w-1/2 max-lg:w-1/2 max-md:w-full">
           <label htmlFor="endDate" className="text-sm font-medium text-gray-300">End Date</label>
           <input
             onChange={(e) => getCampaignData('end_date', e)}
@@ -117,7 +117,7 @@ export default function CreateCampaign() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1 w-1/3">
+      <div className="flex flex-col gap-1 w-1/3 max-lg:w-1/2 max-md:w-full">
         <label htmlFor="budget" className="text-sm font-medium text-gray-300">Budget $</label>
         <input
           onChange={(e) => getCampaignData('budget', e)}
@@ -127,7 +127,7 @@ export default function CreateCampaign() {
         />
       </div>
 
-      <div className="flex flex-col gap-1 w-1/3">
+      <div className="flex flex-col gap-1 w-1/3 max-lg:w-1/2 max-md:w-full">
         <label htmlFor="campaignBanner" className="text-sm font-medium text-gray-300">Campaign Banner</label>
         <input
           ref={imagePicker}
@@ -139,16 +139,16 @@ export default function CreateCampaign() {
         />
       </div>
 
-      <div className="flex flex-col gap-1 w-1/3">
+      <div className="flex flex-col gap-1 w-1/3 max-lg:w-1/2 max-md:w-full">
         <label htmlFor="description" className="text-sm font-medium text-gray-300">Description</label>
         <textarea onChange={(e) => getCampaignData('description', e)} name="description" rows={4} className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           placeholder="Write campaign description..." />
       </div>
 
-      <button className="w-1/3 bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer">Create Campaign</button>
+      <button className="w-1/3 bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer max-md:w-full">Create Campaign</button>
 
       {isError &&
-        <div className="flex w-full justify-center items-center">
+        <div className="flex w-full justify-center items-center max-lg:w-1/2 max-md:w-full">
           <p className="text-lg text-red-700">{isError}</p>
         </div>
       }

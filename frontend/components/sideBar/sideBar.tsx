@@ -34,8 +34,8 @@ export default function SideBar() {
   if (isLoggedIn) {
     return (
       <div className="flex flex-col h-auto bg-[#1e1e1e] text-white p-4 border-r border-gray-700 shadow-lg">
-        <h2 className="text-xl font-semibold mb-8 tracking-wide max-[425px]:text-center">🎵 Music Admin</h2>
-        <nav className="flex flex-col gap-3 max-[425px]:flex-row">
+        <h2 className="text-xl font-semibold mb-8 tracking-wide max-sm:text-center">🎵 Music Admin</h2>
+        <nav className="flex flex-col gap-3 max-sm:flex-row">
           <Link href={'/'} className="text-left px-4 py-2 rounded-md hover:bg-gray-700 transition">
             Dashboard
           </Link>
@@ -44,8 +44,8 @@ export default function SideBar() {
           </Link>
         </nav>
 
-        <div className="mt-auto max-[425px]:flex max-[425px]:justify-center max-[425px]:items-center">
-          <button onClick={logout} className="text-left px-4 py-2 w-full rounded-md hover:bg-red-800 transition cursor-pointer max-[425px]:text-center">
+        <div className="mt-auto max-sm:flex max-sm:justify-center max-sm:items-center">
+          <button onClick={logout} className="text-left px-4 py-2 w-full rounded-md hover:bg-red-800 transition cursor-pointer max-sm:text-center">
             Log Out
           </button>
         </div>
