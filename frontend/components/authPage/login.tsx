@@ -10,7 +10,6 @@ interface UserValue {
 }
 
 export default function Login() {
-  console.log()
   const [userValue, setUserValue] = useState<UserValue>({ // Gathering user values into one state
     email: "",
     password: ""

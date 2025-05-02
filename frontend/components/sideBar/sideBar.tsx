@@ -9,7 +9,6 @@ import checkError from "../utils/checkError"
 export default function SideBar() {
 
   const [isLoggedIn, setIsLoggedIn] = useState<false | null | User>(false)
-  const [isMenu, setIsMenu] = useState<boolean>(false) // Responsive
   const router = useRouter()
 
   useEffect(() => { // Supabase checks and validate if there is any update with session. Updates the UI according to the session.
@@ -54,8 +53,6 @@ export default function SideBar() {
   }
 
   if (isLoggedIn) {
-
-
     return (
       <div className="flex flex-col h-auto bg-[#1e1e1e] text-white p-4 border-r border-gray-700 shadow-lg">
         <h2 className="text-xl font-semibold mb-8 tracking-wide max-sm:text-center">🎵 Music Admin</h2>

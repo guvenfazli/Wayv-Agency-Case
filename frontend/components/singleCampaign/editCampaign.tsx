@@ -82,7 +82,7 @@ export default function EditCampaign({ data }: ComponentProps) {
       const resData = await response.json()
 
       if (file && currentPhoto !== editValue.image_url) {
-        const { data, error } = await supabase.storage.from('campaign-banner').upload(editValue.image_url, file)
+        const { error } = await supabase.storage.from('campaign-banner').upload(editValue.image_url, file)
 
         if (error) {
           throw new Error("Image upload failed: " + error.message);
