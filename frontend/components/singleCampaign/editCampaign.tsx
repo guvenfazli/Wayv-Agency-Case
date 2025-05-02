@@ -83,8 +83,12 @@ export default function EditCampaign({ data }: ComponentProps) {
 
       const resData = await response.json()
 
-      if (currentPhoto !== editValue.image_url) {
+      if (file && currentPhoto !== editValue.image_url) {
         const { data, error } = await supabase.storage.from('campaign-banner').upload(editValue.image_url, file)
+
+        if (error) {
+          throw new Error("Image upload failed: " + error.message);
+        }
       }
 
       setIsSucces(resData.message)
@@ -100,7 +104,6 @@ export default function EditCampaign({ data }: ComponentProps) {
   }
 
   useEffect(() => {
-
     if (isError || isSuccess) {
       const timer = setTimeout(() => {
         setIsError(false)
