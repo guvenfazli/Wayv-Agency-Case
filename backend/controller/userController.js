@@ -98,3 +98,19 @@ exports.editCampaign = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.deleteCampaign = async (req, res, next) => {
+  const campaignId = req.params.campaignId
+  try {
+    const response = await supabase.from('campaigns').delete().eq('id', campaignId)
+    const { data, error } = await supabase.storage.from('campaign-banner').remove(['1746148299310-musicPhoto.jpg'])
+
+    console.log(error)
+    if (error) throwError(500, error)
+
+    return res.status(response.status).json({ message: 'Campaign Informations Updated' })
+
+  } catch (err) {
+    next(err)
+  }
+}

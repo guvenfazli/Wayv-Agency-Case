@@ -54,5 +54,7 @@ router.post('/createCampaign', [
 
 router.patch('/editCampaign/:campaignId', userController.editCampaign)
 
+router.delete('/deleteCampaign/:campaignId', userController.deleteCampaign)
+
 
 module.exports = router

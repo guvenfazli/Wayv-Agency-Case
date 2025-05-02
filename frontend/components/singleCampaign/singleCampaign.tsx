@@ -1,9 +1,7 @@
-
 import dayjs from "dayjs"
-import Image from "next/image"
 import EditCampaign from "./editCampaign"
-
-
+import { supabase } from "@/lib/supabase"
+import { useRouter } from "next/navigation"
 interface CampaignData {
   brand: string,
   budget: number,
@@ -21,6 +19,32 @@ interface ComponentProps {
 }
 
 export default function SingleCampaign({ data }: ComponentProps) {
+
+  const router = useRouter()
+ 
+  async function deleteCampaign() {
+    try {
+      const response = await fetch(`http://localhost:8080/deleteCampaign/${data?.id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      })
+
+      if (!response.ok) {
+        const resData = await response.json()
+        const error = new Error()
+        error.message = resData.message
+        throw error
+      }
+
+      const resData = await response.json()
+
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(err)
+      }
+    }
+  }
+
 
   return (
     <div className="space-y-8">
@@ -51,7 +75,14 @@ export default function SingleCampaign({ data }: ComponentProps) {
         <p className="text-green-400 font-mono text-lg">$ {data?.budget}</p>
       </div>
 
-      <EditCampaign data={data} />
+      <div className="flex gap-4 pt-4">
+
+        <EditCampaign data={data} />
+
+        <button onClick={deleteCampaign} className="px-4 py-2 bg-red-600 hover:bg-red-900 rounded-md font-medium duration-100 ease-in-out cursor-pointer">
+          Delete
+        </button>
+      </div>
     </div>
   )
 }
