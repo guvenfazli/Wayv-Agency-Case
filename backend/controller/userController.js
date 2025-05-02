@@ -60,7 +60,7 @@ exports.createCampaign = async (req, res, next) => {
 
     if (error) throwError(500, error)
 
-    return res.status(200).json({ message: 'Campaign Informations Created' })
+    return res.status(200).json({ message: 'Campaign Created' })
 
   } catch (err) {
     next(err)
@@ -111,7 +111,7 @@ exports.deleteCampaign = async (req, res, next) => {
 
     if (error) throwError(500, error)
 
-    return res.status(response.status).json({ message: 'Campaign Informations Updated' })
+    return res.status(200).json({ message: 'Campaign Deleted.' })
 
   } catch (err) {
     next(err)

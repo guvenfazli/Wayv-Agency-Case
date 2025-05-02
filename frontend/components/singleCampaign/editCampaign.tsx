@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog"
 import { useState, useRef, useEffect } from "react"
 import { supabase } from "@/lib/supabase"
-
+import checkError from "../utils/checkError"
 interface CampaignData {
   brand: string,
   budget: number,
@@ -25,8 +25,8 @@ interface ComponentProps {
 }
 
 export default function EditCampaign({ data }: ComponentProps) {
-  const imagePicker = useRef<HTMLInputElement>(null)
-  const [editValue, setEditValue] = useState({
+  const imagePicker = useRef<HTMLInputElement>(null) // File Picker Ref
+  const [editValue, setEditValue] = useState({ // Collecting user data
     title: data?.title,
     brand: data?.brand,
     start_date: data?.start_date,
@@ -35,10 +35,10 @@ export default function EditCampaign({ data }: ComponentProps) {
     description: data?.description,
     image_url: data?.image_url as string
   })
-  const [isError, setIsError] = useState<string | false>(false)
-  const [isSuccess, setIsSucces] = useState<string | false>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const currentPhoto = data?.image_url
+  const [isError, setIsError] = useState<string | false>(false) // Controlling the request process.
+  const [isSuccess, setIsSucces] = useState<string | false>(false) // Controlling the request process.
+  const [isLoading, setIsLoading] = useState<boolean>(false) // Controlling the request process.
+  const currentPhoto = data?.image_url // Checks if new image uploaded
 
   function gatherValue(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (field === "image_url") {
@@ -75,10 +75,8 @@ export default function EditCampaign({ data }: ComponentProps) {
       })
 
       if (!response.ok) {
-        const resData = await response.json()
-        const error = new Error()
-        error.message = resData.message
-        throw error
+        const errorCheck = await checkError(response)
+        throw errorCheck
       }
 
       const resData = await response.json()
@@ -103,7 +101,7 @@ export default function EditCampaign({ data }: ComponentProps) {
     }
   }
 
-  useEffect(() => {
+  useEffect(() => { // Clears the feedback from request.
     if (isError || isSuccess) {
       const timer = setTimeout(() => {
         setIsError(false)
@@ -143,8 +141,8 @@ export default function EditCampaign({ data }: ComponentProps) {
             />
           </div>
 
-          <div className="flex gap-4 w-full">
-            <div className="flex flex-col gap-1 w-1/2">
+          <div className="flex gap-4 w-full max-[350px]:flex-col">
+            <div className="flex flex-col gap-1 w-1/2 max-[350px]:w-full">
               <label htmlFor="startDate" className="text-sm font-medium text-gray-300">Start Date</label>
               <input
                 onChange={(e) => gatherValue('start_date', e)}
@@ -155,7 +153,7 @@ export default function EditCampaign({ data }: ComponentProps) {
               />
             </div>
 
-            <div className="flex flex-col gap-1 w-1/2">
+            <div className="flex flex-col gap-1 w-1/2 max-[350px]:w-full">
               <label htmlFor="endDate" className="text-sm font-medium text-gray-300">End Date</label>
               <input
                 onChange={(e) => gatherValue('end_date', e)}
@@ -200,7 +198,7 @@ export default function EditCampaign({ data }: ComponentProps) {
             disabled={isLoading}
             className={`w-full bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer ${isLoading && 'bg-blue-600/60'}`}
           >
-            {isLoading ? 'Creating...' : 'Create Campaign'}
+            {isLoading ? 'Changing...' : 'Confirm'}
           </button>
 
           {isError &&

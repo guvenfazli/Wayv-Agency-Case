@@ -2,6 +2,8 @@
 import { supabase } from "@/lib/supabase"
 import { useRef, useState } from "react"
 import checkError from "../utils/checkError"
+import { useRouter } from "next/navigation"
+
 interface CampaignData {
   title: string,
   brand: string,
@@ -16,6 +18,7 @@ export default function CreateCampaign() {
 
   const imagePicker = useRef<HTMLInputElement>(null) // Controlling the request process
   const [isError, setIsError] = useState<string | false>(false) // Controlling the request process
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [campaignData, setCampaignData] = useState<CampaignData>({ // Collecting the data and controlling component.
     title: "",
     brand: "",
@@ -25,6 +28,7 @@ export default function CreateCampaign() {
     image_url: "",
     description: ""
   })
+  const router = useRouter()
 
   function getCampaignData(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (field === "image_url") {
@@ -48,6 +52,7 @@ export default function CreateCampaign() {
     e.preventDefault()
 
     try {
+      setIsLoading(true)
       const file = imagePicker.current?.files?.[0];
       if (!file) {
         throw new Error("Please select a campaign banner image.");
@@ -68,9 +73,12 @@ export default function CreateCampaign() {
       }
 
       const { data, error } = await supabase.storage.from('campaign-banner').upload(campaignData.image_url, file)
+      setIsLoading(false)
+      router.push('/')
     } catch (err) {
       if (err instanceof Error) {
         setIsError(err.message)
+        setIsLoading(false)
       }
     }
   }
@@ -145,7 +153,9 @@ export default function CreateCampaign() {
           placeholder="Write campaign description..." />
       </div>
 
-      <button className="w-1/3 bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer max-md:w-full">Create Campaign</button>
+      <button className={`w-1/3 bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer max-md:w-full ${isLoading && 'bg-blue-700/30'}`}>
+        {isLoading ? 'Creating...' : 'Create Campaign'}
+      </button>
 
       {isError &&
         <div className="flex w-full justify-center items-center max-lg:w-1/2 max-md:w-full">
