@@ -19,7 +19,7 @@ interface ComponentProps {
 export default function CampaignCard({ data }: ComponentProps) {
 
   const router = useRouter()
-  function redirectToCampaignPage(id: string) {
+  function redirectToCampaignPage(id: string) { // User clicks to component, redirects to campaign page.
     router.push(`/campaigns/${id}`)
   }
 
