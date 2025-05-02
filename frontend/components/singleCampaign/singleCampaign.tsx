@@ -22,8 +22,6 @@ interface ComponentProps {
 
 export default function SingleCampaign({ data }: ComponentProps) {
 
-
-
   return (
     <div className="space-y-8">
       <div className="border-b border-gray-700 pb-6">

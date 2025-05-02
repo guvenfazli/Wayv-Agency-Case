@@ -52,5 +52,7 @@ router.post('/createCampaign', [
     .withMessage('Descripion should be minimum 10 characters!'),
 ], userController.createCampaign)
 
+router.patch('/editCampaign/:campaignId', userController.editCampaign)
+
 
 module.exports = router

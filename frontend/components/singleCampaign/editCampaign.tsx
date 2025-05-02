@@ -5,8 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useState, useRef } from "react"
-
+import { useState, useRef, useEffect } from "react"
 
 interface CampaignData {
   brand: string,
@@ -24,26 +23,91 @@ interface ComponentProps {
   data: CampaignData | null
 }
 
-
 export default function EditCampaign({ data }: ComponentProps) {
 
+  const imagePicker = useRef<HTMLInputElement>(null)
   const [editValue, setEditValue] = useState({
     title: data?.title,
     brand: data?.brand,
     start_date: data?.start_date,
     end_date: data?.end_date,
     budget: data?.budget,
-    description: data?.description
+    description: data?.description,
+    image_url: data?.image_url
   })
+  const [isError, setIsError] = useState<string | false>(false)
+  const [isSuccess, setIsSucces] = useState<string | false>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   function gatherValue(field: string, input: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setEditValue((prev) => ({
-      ...prev,
-      [field]: input.target.value
-    }))
+    if (field === "image_url") {
+      const file = imagePicker.current?.files?.[0];
+      if (file) {
+        setEditValue((prev) => ({
+          ...prev,
+          image_url: Date.now() + '-' + file.name,
+        }));
+      }
+      return;
+    } else {
+      setEditValue((prev) => ({
+        ...prev,
+        [field]: input.target.value
+      }))
+    }
   }
 
-  console.log(editValue)
+  async function submitEdit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+
+    try {
+      setIsLoading(true)
+      setIsError(false)
+
+      const response = await fetch(`http://localhost:8080/editCampaign/${data?.id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        body: JSON.stringify(editValue),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+
+      if (!response.ok) {
+        const resData = await response.json()
+        const error = new Error()
+        error.message = resData.message
+        throw error
+      }
+
+      const resData = await response.json()
+
+      setIsSucces(resData.message)
+      setIsLoading(false)
+
+    } catch (err) {
+      if (err instanceof Error) {
+        setIsError(err.message)
+        setIsLoading(false)
+        setIsSucces(false)
+      }
+    }
+  }
+
+  useEffect(() => {
+
+    if (isError || isSuccess) {
+      const timer = setTimeout(() => {
+        setIsError(false)
+        setIsSucces(false)
+      }, 2000)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+
+  }, [isError, isSuccess])
 
   return (
     <div className="flex gap-4 pt-4">
@@ -54,7 +118,7 @@ export default function EditCampaign({ data }: ComponentProps) {
             <DialogTitle className="text-xl font-semibold text-white">Edit Form</DialogTitle>
           </DialogHeader>
 
-          <form className="space-y-4 mt-4">
+          <form onSubmit={(e) => submitEdit(e)} className="space-y-4 mt-4">
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="title" className="text-sm font-medium text-gray-300">Title</label>
               <input onChange={(e) => gatherValue('title', e)} defaultValue={editValue.title} name="title" type="text" placeholder="Enter campaign title" className="bg-[#0e0e0e] text-white border border-gray-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
@@ -110,6 +174,8 @@ export default function EditCampaign({ data }: ComponentProps) {
             <div className="flex flex-col gap-1 w-full">
               <label htmlFor="campaignBanner" className="text-sm font-medium text-gray-300">Campaign Banner</label>
               <input
+                ref={imagePicker}
+                onChange={(e) => gatherValue('image_url', e)}
                 type="file"
                 name="campaignBanner"
                 className="text-gray-300 file:bg-gray-800 file:text-white file:border-none file:px-4 file:py-2 file:rounded-md file:cursor-pointer"
@@ -123,8 +189,24 @@ export default function EditCampaign({ data }: ComponentProps) {
                 placeholder="Write campaign description..." />
             </div>
 
-            <button className="w-full bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer">Create Campaign</button>
+            <button
+              disabled={isLoading}
+              className={`w-full bg-blue-600 mt-4 hover:bg-blue-700 transition-colors text-white font-medium py-2 px-4 rounded-md cursor-pointer ${isLoading && 'bg-blue-600/60'}`}
+            >
+              {isLoading ? 'Creating...' : 'Create Campaign'}
+            </button>
 
+            {isError &&
+              <div className="flex w-full justify-center items-center">
+                <p className="text-lg text-red-700">{isError}</p>
+              </div>
+            }
+
+            {isSuccess &&
+              <div className="flex w-full justify-center items-center">
+                <p className="text-lg text-green-700">{isSuccess}</p>
+              </div>
+            }
           </form>
         </DialogContent>
       </Dialog>
