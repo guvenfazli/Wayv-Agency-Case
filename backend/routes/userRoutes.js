@@ -22,7 +22,7 @@ router.post('/login', [
     .withMessage('Password is required')
     .isLength({ min: 5 })
     .withMessage('Password must be at least 5 characters long')
-], authCheck, authController.userLogin)
+], authController.userLogin)
 
 router.post('/createCampaign', [
   body('title')

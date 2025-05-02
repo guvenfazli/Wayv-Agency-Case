@@ -10,7 +10,7 @@ interface UserValue {
 }
 
 export default function Login() {
-
+  console.log()
   const [userValue, setUserValue] = useState<UserValue>({ // Gathering user values into one state
     email: "",
     password: ""
@@ -32,15 +32,12 @@ export default function Login() {
     // I'm using both login methods. Using Supabase and my own method. Just to show the both of them. Also, i'm doing backend validation as well and i'm saving the cookie in order to send it with every request. 
 
     e.preventDefault()
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: userValue.email,
-      password: userValue.password,
-    })
+
 
     try {
       setIsLoading(true)
       setIsError(false)
-      const response = await fetch('http://localhost:8080/login', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/login`, {
         method: "POST",
         body: JSON.stringify(userValue),
         headers: {
@@ -56,6 +53,13 @@ export default function Login() {
         throw error
       }
 
+      if (response.ok) {
+        await supabase.auth.signInWithPassword({
+          email: userValue.email,
+          password: userValue.password,
+        })
+      }
+
       setIsError(false)
       setIsLoading(false)
       router.push('/')
@@ -63,7 +67,6 @@ export default function Login() {
       if (err instanceof Error) {
         setIsError(err.message);
         setIsLoading(false)
-
       }
     }
   }
