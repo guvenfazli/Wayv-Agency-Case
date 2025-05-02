@@ -58,7 +58,7 @@ export default function CreateCampaign() {
         throw new Error("Please select a campaign banner image.");
       }
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/createCampaign`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/createCampaign`, { // Request sent to backend for creating the campaign
         method: "POST",
         credentials: "include",
         body: JSON.stringify(campaignData),
@@ -72,7 +72,7 @@ export default function CreateCampaign() {
         throw errorCheck
       }
 
-      if (response.ok) await supabase.storage.from('campaign-banner').upload(campaignData.image_url, file)
+      if (response.ok) await supabase.storage.from('campaign-banner').upload(campaignData.image_url, file) // Uploads the image.
 
       setIsLoading(false)
       router.push('/')
