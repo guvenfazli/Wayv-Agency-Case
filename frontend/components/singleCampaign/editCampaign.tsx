@@ -33,7 +33,7 @@ export default function EditCampaign({ data }: ComponentProps) {
     end_date: data?.end_date,
     budget: data?.budget,
     description: data?.description,
-    image_url: data?.image_url
+    image_url: data?.image_url as string
   })
   const [isError, setIsError] = useState<string | false>(false)
   const [isSuccess, setIsSucces] = useState<string | false>(false)

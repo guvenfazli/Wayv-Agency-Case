@@ -1,7 +1,9 @@
 "use client"
 
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { BaseSyntheticEvent, useState } from "react"
+
 
 interface UserValue {
   email: string;
@@ -29,6 +31,11 @@ export default function Login() {
 
   async function submitLogin(e: BaseSyntheticEvent) {
     e.preventDefault()
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: userValue.email,
+      password: userValue.password,
+    })
+
 
     try {
       setIsLoading(true)
@@ -62,20 +69,26 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col justify-center gap-2 border border-white py-3 px-5 h-1/3 w-1/4 rounded-4xl bg-stone-900">
+    <div className="flex flex-col justify-center gap-2 border border-white py-3 px-5 min-h-1/3 w-1/4 rounded-4xl bg-stone-900">
       <div className="flex text-center justify-center items-center">
         <p className="text-xl">Admin Login</p>
       </div>
 
       <form onSubmit={(e) => submitLogin(e)} className="flex flex-col justify-start items-start gap-3">
         <label className="text-lg">Email</label>
-        <input onChange={(e) => gatherValue("email", e)}  type="email" className="bg-black rounded-md py-1.5 w-full px-1 "></input>
+        <input onChange={(e) => gatherValue("email", e)} type="email" className="bg-black rounded-md py-1.5 w-full px-1 "></input>
         <label className="text-lg">Password</label>
-        <input onChange={(e) => gatherValue("password", e)}  type="password" className="bg-black rounded-md py-1.5 w-full px-1"></input>
+        <input onChange={(e) => gatherValue("password", e)} type="password" className="bg-black rounded-md py-1.5 w-full px-1"></input>
         <div className="flex w-full justify-center items-center">
           <button disabled={isLoading} className={`bg-black w-1/2 py-2 rounded-lg cursor-pointer hover:bg-black/80 duration-100 ${isLoading && 'bg-black/30'}`}>{isLoading ? 'Logging In...' : 'Login'}</button>
         </div>
       </form>
+
+      <div className="text-xs">
+        <p>Example Account</p>
+        <p>admin@example.com</p>
+        <p>admin12345</p>
+      </div>
 
       {isError && <p>{isError}</p>}
     </div>
