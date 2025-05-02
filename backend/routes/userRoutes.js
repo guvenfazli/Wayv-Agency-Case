@@ -2,11 +2,12 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controller/userController')
 const authController = require('../controller/authController')
+const authCheck = require('../utils/authCheck')
 const { body } = require('express-validator')
 
 
-router.get('/campaigns/:campaignId', userController.getCampaign)
-router.get('/campaigns', userController.getCampaigns)
+router.get('/campaigns/:campaignId', authCheck, userController.getCampaign)
+router.get('/campaigns', authCheck, userController.getCampaigns)
 
 router.post('/login', [
   body('email')
@@ -21,7 +22,7 @@ router.post('/login', [
     .withMessage('Password is required')
     .isLength({ min: 5 })
     .withMessage('Password must be at least 5 characters long')
-], authController.userLogin)
+], authCheck, authController.userLogin)
 
 router.post('/createCampaign', [
   body('title')
@@ -50,11 +51,11 @@ router.post('/createCampaign', [
     .withMessage('Descripion is missing!')
     .isLength({ min: 10 })
     .withMessage('Descripion should be minimum 10 characters!'),
-], userController.createCampaign)
+], authCheck, userController.createCampaign)
 
-router.patch('/editCampaign/:campaignId', userController.editCampaign)
+router.patch('/editCampaign/:campaignId', authCheck, userController.editCampaign)
 
-router.delete('/deleteCampaign/:campaignId/:imageUrl', userController.deleteCampaign)
+router.delete('/deleteCampaign/:campaignId/:imageUrl', authCheck, userController.deleteCampaign)
 
 
 module.exports = router
